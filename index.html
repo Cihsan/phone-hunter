@@ -96,6 +96,9 @@
         <input type="text" name="" id="searchBar">
         <button onclick="searchButton()">Search</button>
     </div>
+    <div id="buttonInfo">
+
+    </div>
     <div id="searchResult" class="grid m">
 
         <!--  <div>1</div>
@@ -135,10 +138,24 @@
             const url = `https://openapi.programming-hero.com/api/phone/${info}`
             fetch(url)
                 .then(res => res.json())
-                .then(data => console.log(data.data))
-            console.log(info)
+                .then(data => displayInfo(data.data))
+            //console.log(url)
         }
-
+        const displayInfo = display => {
+            console.log(display.name)
+            const buttonInfo = document.getElementById('buttonInfo')
+            buttonInfo.innerHTML = ''
+            const div = document.createElement('div')
+            div.className = 'card'
+            div.innerHTML = `
+                <div>
+                    <img  src="${display.image}">
+                    <h3>${display.name}</h3>
+                    <p>${display.brand}</p>
+                </div>
+                `
+            buttonInfo.appendChild(div)
+        }
     </script>
 </body>
 
