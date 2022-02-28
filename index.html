@@ -32,7 +32,8 @@
             display: grid;
             grid-template-columns: auto auto auto;
             justify-items: center;
-            align-items: center
+            align-items: center;
+            gap: 10;
         }
 
         .flexc {
@@ -49,6 +50,22 @@
         input {
             padding: 10px;
         }
+
+        .card {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* responsive */
+        @media only screen and (max-width: 620px) {
+
+            /* For mobile phones: */
+            .grid {
+
+                grid-template-columns: auto;
+
+            }
+        }
     </style>
 </head>
 <header>
@@ -60,10 +77,11 @@
         <input type="text" name="" id="searchBar">
         <button onclick="searchButton()">Search</button>
     </div>
-    <div class="grid">
-        <div>1</div>
+    <div id="searchResult" class="grid m">
+
+        <!--  <div>1</div>
         <div>2</div>
-        <div>3</div>
+        <div>3</div> -->
     </div>
 
 
@@ -73,8 +91,23 @@
             const url = `https://openapi.programming-hero.com/api/phones?search=${searchBar}`
             fetch(url)
                 .then(res => res.json())
-                .then(data => console.log(data.data))
+                .then(data => allphone(data.data))
             //console.log(searchBar)
+        }
+        // searchButton()
+        const allphone = phones => {
+            const searchResult = document.getElementById('searchResult')
+            phones.forEach(phone => {
+                const div = document.createElement('div')
+                div.className = 'card'
+                div.innerHTML = `
+                <img src="${phone.image}">
+                <h3>${phone.phone_name}</h3>
+                <p>${phone.brand}</p>
+                `
+                searchResult.appendChild(div)
+                //console.log(phone.phone_name)
+            });
         }
     </script>
 </body>
