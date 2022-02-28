@@ -30,10 +30,10 @@
 
         .grid {
             display: grid;
-            grid-template-columns: auto auto auto;
+            grid-template-columns: auto auto auto auto;
             justify-items: center;
             align-items: center;
-            gap: 10;
+
         }
 
         .flexc {
@@ -48,12 +48,33 @@
         }
 
         input {
-            padding: 10px;
+            width: 50%;
+
         }
 
         .card {
-            padding: 20px;
+            margin: 10px;
+            padding: 30px;
             text-align: center;
+            background-color: rgba(216, 216, 216, 0.445);
+            border-radius: 10px;
+        }
+
+        p {
+            margin: 10px;
+        }
+
+        button {
+            margin: 0, 18px;
+            padding: 10px;
+            background-color: #465769;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: transparent;
+            color: #000;
         }
 
         /* responsive */
@@ -61,9 +82,7 @@
 
             /* For mobile phones: */
             .grid {
-
                 grid-template-columns: auto;
-
             }
         }
     </style>
@@ -94,21 +113,32 @@
                 .then(data => allphone(data.data))
             //console.log(searchBar)
         }
-        // searchButton()
+        searchButton()
         const allphone = phones => {
             const searchResult = document.getElementById('searchResult')
             phones.forEach(phone => {
                 const div = document.createElement('div')
                 div.className = 'card'
                 div.innerHTML = `
-                <img src="${phone.image}">
-                <h3>${phone.phone_name}</h3>
-                <p>${phone.brand}</p>
+                <div>
+                    <img  src="${phone.image}">
+                    <h3>${phone.phone_name}</h3>
+                    <p>${phone.brand}</p>
+                    <button onclick="infoButton('${phone.slug}')">Details</button>
+                </div>
                 `
                 searchResult.appendChild(div)
                 //console.log(phone.phone_name)
             });
         }
+        const infoButton = info => {
+            const url = `https://openapi.programming-hero.com/api/phone/${info}`
+            fetch(url)
+                .then(res => res.json())
+                .then(data => console.log(data.data))
+            console.log(info)
+        }
+
     </script>
 </body>
 
