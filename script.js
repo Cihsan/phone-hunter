@@ -1,32 +1,25 @@
+
 const searchButton = () => {
-    const spinner = document.getElementById('spinner')
     const searchBar = document.getElementById('searchBar')
     const searchText = searchBar.value
     searchBar.value = ''
-    /* if (isNaN(searchBar)) {
-        error.style.display = 'block'
-        console.log('Not Available')
-    } */
-    spinner.style.display = 'block'
-    //document.getElementById('searchBar').value = ''
+
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     fetch(url)
         .then(res => res.json())
         .then(data => allphone(data.data))
-    //console.log(searchBar)
 }
-//searchButton()
+
 const allphone = phones => {
     const displayPhone = phones.slice(0, 20)
     const searchResult = document.getElementById('searchResult')
     searchResult.textContent = ''
     const error = document.getElementById('error')
-
+    /* error handle */
     if (!phones || phones === 0 || phones == null || phones === undefined || phones == []) {
         error.style.display = 'block'
         console.log('if')
     }
-
     else {
         displayPhone.forEach(phone => {
             const div = document.createElement('div')
@@ -52,8 +45,8 @@ const infoButton = info => {
     fetch(url)
         .then(res => res.json())
         .then(data => displayInfo(data.data))
-    //console.log(url)
 }
+
 const displayInfo = display => {
     const buttonInfo = document.getElementById('buttonInfo')
     buttonInfo.textContent = ''
@@ -90,8 +83,7 @@ const displayInfo = display => {
             <h6>USB: ${display.others.USB ? display.others.USB : 'Not Given'} <h6>                
             <h6>WLAN :${display.others.WLAN ? display.others.WLAN : 'Not Given'}<h6>  
         </div> 
-    </div>              
-        `
+    </div>`;
     buttonInfo.appendChild(div)
 
 }
