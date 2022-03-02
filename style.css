@@ -1,3 +1,12 @@
 #error {
     display: none;
 }
+
+#spinner{
+    display: none;
+
+}
+img:hover{
+    transform: scale(.95);
+    transition: .5s ease-in-out;
+}

@@ -1,5 +1,6 @@
 
 const searchButton = () => {
+    const buttonInfo = document.getElementById('buttonInfo').innerHTML = ''
     const searchBar = document.getElementById('searchBar')
     const searchText = searchBar.value
     searchBar.value = ''
@@ -11,14 +12,16 @@ const searchButton = () => {
 }
 
 const allphone = phones => {
+
     const displayPhone = phones.slice(0, 20)
     const searchResult = document.getElementById('searchResult')
     searchResult.textContent = ''
     const error = document.getElementById('error')
-    /* error handle */
-    if (!phones || phones === 0 || phones == null || phones === undefined || phones == []) {
+    /* error handle try to my best but Ican't fix it*/
+    if (!phones || phones === 0 || phones == null || phones === undefined || phones === []) {
         error.style.display = 'block'
-        console.log('if')
+        /* console log dosen't show*/
+        console.log('block')
     }
     else {
         displayPhone.forEach(phone => {
@@ -34,8 +37,7 @@ const allphone = phones => {
         `
             searchResult.appendChild(div)
             error.style.display = 'none'
-            //console.log(phone.phone_name)
-            console.log('ele')
+            console.log('none')
         });
     }
 }
