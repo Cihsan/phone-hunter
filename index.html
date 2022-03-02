@@ -5,135 +5,112 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Device Store</title>
+    <title>Phone Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 95%;
-            border: 1px solid red;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-
-        }
-
-        .m {
-            margin: 1.5rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: auto auto auto auto;
-            justify-items: center;
-            align-items: center;
-
-        }
-
-        .flexc {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flexr {
-            display: flex;
-            flex-direction: row;
-            justify-content: center
-        }
-
-        input {
-            width: 50%;
-
-        }
-
-        .card {
-            margin: 10px;
-            padding: 30px;
-            text-align: center;
-            background-color: rgba(216, 216, 216, 0.445);
-            border-radius: 10px;
-        }
-
-        p {
-            margin: 10px;
-        }
-
-        button {
-            margin: 0, 18px;
-            padding: 10px;
-            background-color: #465769;
-            color: #fff;
-            font-size: 18px;
-        }
-
-        button:hover {
-            background-color: transparent;
-            color: #000;
-        }
-
-        /* responsive */
-        @media only screen and (max-width: 620px) {
-
-            /* For mobile phones: */
-            .grid {
-                grid-template-columns: auto;
-            }
+        #error {
+            display: none;
         }
     </style>
 </head>
-<header>
-    <h1 class="m">Smart Device Store</h1>
+<header class="container">
+    <h1 class="text-center m-3">Smart Device Store</h1>
 </header>
 
 <body>
-    <div class="flexr">
-        <input type="text" name="" id="searchBar">
-        <button onclick="searchButton()">Search</button>
-    </div>
-    <div id="buttonInfo">
+    <main class="container">
+        <!-- Search Field And Button -->
 
-    </div>
-    <div id="searchResult" class="grid m">
+        <section>
+            <div class="input-group mb-3 w-75 mx-auto">
+                <input id="searchBar" type="text" class="form-control p-3"
+                    placeholder="Find Out Your Favorite Device Name Model Brand"
+                    aria-label="Find Out Your Favorite Device Name Model Brand" aria-describedby="button-addon2">
+                <button class="btn btn-outline-dark bold mx-2 p-3" type="button"
+                    onclick="searchButton()">Search</button>
+            </div>
+        </section>
 
-        <!--  <div>1</div>
-        <div>2</div>
-        <div>3</div> -->
-    </div>
+        <!-- Error Handle -->
+        <div>
+            <h4 class="text-center text-danger" id="error">This Is Not Found</h4>
+        </div>
 
+        <!-- Spinner -->
+        <div class="mx-auto">
+            <div id="spinner" class="spinner-border text-primary " role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Click To Display -->
+
+        <div class="container">
+            <div id="buttonInfo">
+            </div>
+        </div>
+        <!-- Search To Display -->
+        <div id="searchResult" class="row row-cols-1 row-cols-md-4 g-4">
+        </div>
+
+    </main>
 
     <script>
+
         const searchButton = () => {
-            const searchBar = document.getElementById('searchBar').value
-            const url = `https://openapi.programming-hero.com/api/phones?search=${searchBar}`
+            const spinner = document.getElementById('spinner')
+            const searchBar = document.getElementById('searchBar')
+            const searchText = searchBar.value
+            searchBar.value = ''
+            /* if (isNaN(searchBar)) {
+                error.style.display = 'block'
+                console.log('Not Available')
+            } */
+            spinner.style.display = 'block'
+            //document.getElementById('searchBar').value = ''
+            const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
             fetch(url)
                 .then(res => res.json())
                 .then(data => allphone(data.data))
             //console.log(searchBar)
         }
-        searchButton()
+        //searchButton()
         const allphone = phones => {
+            const displayPhone = phones.slice(0, 20)
             const searchResult = document.getElementById('searchResult')
-            phones.forEach(phone => {
-                const div = document.createElement('div')
-                div.className = 'card'
-                div.innerHTML = `
-                <div>
+            searchResult.textContent = ''
+            const error = document.getElementById('error')
+
+            if (!phones || phones === 0 || phones == null || phones === undefined || phones == []) {
+                error.style.display = 'block'
+                console.log('if')
+            }
+
+            else {
+                displayPhone.forEach(phone => {
+                    const div = document.createElement('div')
+                    div.className = 'card align-items-center p-3'
+                    div.innerHTML = `
+                <div class="text-center">
                     <img  src="${phone.image}">
-                    <h3>${phone.phone_name}</h3>
+                    <h4>${phone.phone_name}</h4>
                     <p>${phone.brand}</p>
-                    <button onclick="infoButton('${phone.slug}')">Details</button>
+                    <button  class="btn btn-dark" onclick="infoButton('${phone.slug}')">Details</button>
                 </div>
                 `
-                searchResult.appendChild(div)
-                //console.log(phone.phone_name)
-            });
+                    searchResult.appendChild(div)
+                    error.style.display = 'none'
+                    //console.log(phone.phone_name)
+                    console.log('ele')
+                });
+            }
+
+
+
         }
+
         const infoButton = info => {
             const url = `https://openapi.programming-hero.com/api/phone/${info}`
             fetch(url)
@@ -142,19 +119,45 @@
             //console.log(url)
         }
         const displayInfo = display => {
-            console.log(display.name)
             const buttonInfo = document.getElementById('buttonInfo')
-            buttonInfo.innerHTML = ''
+            buttonInfo.textContent = ''
+            console.log(display)
             const div = document.createElement('div')
-            div.className = 'card'
             div.innerHTML = `
-                <div>
+                <div class="d-flex flex-row justify-content-around align-items-center m-3">
+                <div class='w-25'>
                     <img  src="${display.image}">
-                    <h3>${display.name}</h3>
-                    <p>${display.brand}</p>
+                    <h4>${display.name}</h4>
+                    <p >${display.brand}</p>
+                    <h6>${display.releaseDate ? display.releaseDate : 'Not Found Release Date'}</h6>
                 </div>
+                <div class='w-25 m-3'>
+                    <h3>All Features</h3>
+                    <h6>Storage: ${display.mainFeatures.storage}</h6>
+                    <h6>Display Size: ${display.mainFeatures.displaySize}</h6>
+                    <h6>ChipSet: ${display.mainFeatures.chipSet}</h6>
+                    <h6>Memory: ${display.mainFeatures.memory}</h6>
+                    <h5>Sensors</h5>
+                    <h6>${display.mainFeatures.sensors[1] ? display.mainFeatures.sensors[1] : 'Not Given'}</h6>
+                    <h6>${display.mainFeatures.sensors[2] ? display.mainFeatures.sensors[2] : 'Not Given'}</h6>
+                    <h6>${display.mainFeatures.sensors[0] ? display.mainFeatures.sensors[0] : 'Not Given'}</h6>
+                    <h6>${display.mainFeatures.sensors[3] ? display.mainFeatures?.sensors[3] : 'Not Given'}</h6>
+                    </div>
+                    <div class='w-25'>
+                    <h6>${display.mainFeatures.sensors[4] ? display.mainFeatures.sensors[4] : 'Not Given'}</h6>
+                    <h6>${display.mainFeatures.sensors[5] ? display.mainFeatures.sensors[5] : 'Not Given'}</h6>
+                    <h5>Others Feature</h5>
+                    <h6>Bluetooth: ${display.others.Bluetooth ? display.others.Bluetooth : 'Not Given'}<h6> 
+                    <h6>GPS: ${display.others.GPS ? display.others.GPS : 'Not Given'}<h6>               
+                    <h6>NFC: ${display.others.NFC ? display.others.NFC : 'Not Given'} <h6>                
+                    <h6>Radio: ${display.others.Radio ? display.others.Radio : 'Not Given'}<h6>                  
+                    <h6>USB: ${display.others.USB ? display.others.USB : 'Not Given'} <h6>                
+                    <h6>WLAN :${display.others.WLAN ? display.others.WLAN : 'Not Given'}<h6>  
+                </div> 
+            </div>              
                 `
             buttonInfo.appendChild(div)
+
         }
     </script>
 </body>
